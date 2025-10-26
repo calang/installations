@@ -1,0 +1,14 @@
+name: nvidia_gpu_setup
+channels:
+  - nvidia
+  - conda-forge
+  - nodefaults
+dependencies:
+  - tensorflow[and-cuda]
+  - cuda-python
+  # - pip
+  # - pip:
+  #   - https://storage.googleapis.com/tensorflow/versions/2.17.0/tensorflow-2.17.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+
+# export CUDA_DIR=/home/calang/installed/miniforge3/envs/ml_adv_algo
+# export XLA_FLAGS=--xla_gpu_cuda_data_dir=$CUDA_DIR
