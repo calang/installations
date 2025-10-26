@@ -166,6 +166,10 @@ libreoffice:
 librejava:	libreoffice
 	sudo apt install -y libreoffice-java-common
 
+# target: librepython - install Python integration with LibreOffice (UNO bridge)
+librepython:	libreoffice python
+	sudo apt install -y python3-uno libreoffice-script-provider-python
+
 # target: mamba - install mamba
 mamba:
 	# per-user installation
