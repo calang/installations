@@ -157,9 +157,13 @@ jupl:	mamba
 # target: jupl-swi - install jupyter lab kernel for SWI-Prolog
 jupl-swi:	mamba jupl swi-prolog
 	scripts/install-jupl-swi.sh
-	
+
+# target: libreoffice - install LibreOffice suite
+libreoffice:
+	sudo scripts/install-libreoffice.sh
+
 # target: librejava - install Java integration with LibreOffice
-librejava:
+librejava:	libreoffice
 	sudo apt install -y libreoffice-java-common
 
 # target: mamba - install mamba
