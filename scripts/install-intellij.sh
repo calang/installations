@@ -16,7 +16,7 @@ if [ "$EUID" -ne 0 ]
 fi
 
 
-set -x
+# set -x
 
 
 echo Remove any previous installation
@@ -24,7 +24,7 @@ rm -rf /opt/idea*
 
 
 echo Download tarball
-TAR=ideaIC-2025.2.3.tar.gz
+TAR=ideaIC-2025.2.4.tar.gz
 
 [[ -f $TAR ]] || wget https://download.jetbrains.com/idea/$TAR
 
@@ -40,8 +40,7 @@ echo '---'
 echo To finish up:
 echo 
 echo 1. Start the app: /opt/idea/bin/idea
-echo 2. Click on the settings icon
-echo 3. Choose "Create Desktop Entry"
+echo 2. Edit file /home/calang/.local/share/applications/jetbrains-idea-ce.desktop
 echo '---'
 
 rm $TAR
