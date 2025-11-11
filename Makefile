@@ -228,6 +228,10 @@ screen:
 unixodbc:
 	sudo scripts/install-unixodbc.sh
 
+# target: virtualbox - install Oracle VirtualBox
+virtualbox:
+	sudo scripts/install-virtualbox.sh
+
 # target: vscode - install VS Code
 vscode:
 	sudo scripts/install-vscode.sh
