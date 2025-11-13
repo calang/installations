@@ -58,10 +58,10 @@ apt update
 # Use Tab to navigate to <Ok> and press Enter
 if [ "$USE_UBUNTU_REPO" = true ]; then
   # Use Ubuntu's packages (no version suffix)
-  apt install -y virtualbox virtualbox-ext-pack virtualbox-qt
+  apt install -y virtualbox virtualbox-ext-pack virtualbox-qt virtualbox-guest-additions-iso
 else
   # Use Oracle's packages (with version suffix)
-  apt install -y virtualbox-7.0 virtualbox-ext-pack
+  apt install -y virtualbox-7.0 virtualbox-ext-pack virtualbox-guest-additions-iso
 fi
 
 # Add the current user to vboxusers group

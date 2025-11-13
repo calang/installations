@@ -240,6 +240,12 @@ vscode:
 # sw-xtras:
 # 	sudo scripts/sw-xtras.sh
 
+# target: win11vb-cinde - install VirtualBox Windows 11 VB for Cinde
+win11vb-cinde:
+	@echo 'Installing Windows 11 VirtualBox for Cinde - make sure you have the license to use Windows 11'
+	@echo '*** This is disabled, for licensing reasons - enable it if you have the license ***'
+	#scripts/install-win11vb-cinde.sh
+
 # target: xdot - install xdot.py: interactive viewer for graphs written in Graphviz's dot language
 xdot:
 	sudo scripts/install-xdot.sh
