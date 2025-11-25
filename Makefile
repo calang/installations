@@ -179,6 +179,10 @@ mamba:
 musescore:	fuse screen
 	scripts/install-musescore.sh
 
+# target: music_dep - install abcmidi and timidity
+music_dep:
+	sudo apt-get install abcmidi timidity
+
 # target: pgadmin - GUI to manage PostgreSQL DBs
 pgadmin:
 	sudo scripts/install-pgadmin.sh
