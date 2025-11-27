@@ -2,7 +2,7 @@
 
 # exit on any command failure 
 # or usage of undefined variable 
-# or failure of any command within a pipaline
+# or failure of any command within a pipeline
 set -euo pipefail
 
 

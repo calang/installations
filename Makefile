@@ -55,6 +55,10 @@ adduser:
 alias:
 	scripts/alias.sh
 
+# target: antigravity - install Antigravity
+antigravity:
+	sudo scripts/install-antigravity.sh
+
 # target: chrome - install chrome
 chrome:
 	sudo scripts/install-chrome.sh
