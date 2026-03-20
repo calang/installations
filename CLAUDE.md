@@ -42,14 +42,66 @@ Most `install-*.sh` scripts require `sudo` and are invoked via `sudo scripts/ins
 
 ## Repository Structure
 
+- `compendium discussion icons/` — SVG/PNG icons for use with draw.io
+- `config/default.conf` - Centralized configuration
+- `env.yml` / `scripts/environment.yml` — conda environment definitions for GPU setup
 - `Makefile` — orchestrates all installations; each target has a `# target:` comment for `make help`
 - `scripts/` — individual install/config scripts; `install-*.sh` installs, `adj-*.sh` adjusts config, `no*.sh` removes
+- `scripts/lib/common.sh` - Shared functions library for all scripts
+- `scripts/TEMPLATE-install.sh` - Template for new installation scripts
 - `scripts/sfd_ClientesLinux_DEB64_Rev26/` — BCCR digital signature client package (Costa Rica)
-- `compendium discussion icons/` — SVG/PNG icons for use with draw.io
-- `env.yml` / `scripts/environment.yml` — conda environment definitions for GPU setup
 
-## Adding a New Script/Target
+## How to Use the Common Library
 
-1. Create `scripts/install-<name>.sh` following existing script conventions
-2. Add a Makefile target with a `# target: <name> - description` comment line above it
-3. Specify dependencies as prerequisite targets if needed (e.g., `<name>: java mamba`)
+### Basic Pattern
+Every script should start with:
+
+```bash
+#!/usr/bin/env bash
+source "$(dirname "$0")/lib/common.sh"
+
+print_header "Installing My Package"
+require_root
+```
+
+### Common Functions to Use
+
+| Instead of... | Use this... |
+|--------------|-------------|
+| `echo "Installing..."` | `log_info "Installing..."` |
+| `echo "ERROR: Failed"` | `log_error "Failed"` |
+| `if [ "$EUID" -ne 0 ]` | `require_root` |
+| `apt install -y pkg` | `ensure_apt_package "pkg"` |
+| `if which cmd` | `if check_already_installed "cmd"` |
+| `wget https://...` | `download_if_missing "https://..."` |
+| `rm file.deb` | `cleanup_file "file.deb"` |
+
+## How to Create a New Installation Script
+
+1. **Copy the template:**
+   ```bash
+   cp scripts/TEMPLATE-install.sh scripts/install-mynewapp.sh
+   ```
+
+2. **Fill in the template:**
+   - Update the header comments
+   - Set PACKAGE_NAME
+   - Choose installation method
+   - Remove unused sections
+
+3. **Make it executable:**
+   ```bash
+   chmod +x scripts/install-mynewapp.sh
+   ```
+
+4. **Add to Makefile:**
+   ```makefile
+   # target: mynewapp - Install My New App
+   mynewapp:
+       sudo scripts/install-mynewapp.sh
+   ```
+
+5. **Test it:**
+   ```bash
+   make mynewapp
+   ```
