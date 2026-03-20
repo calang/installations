@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Install Antigravity for Ubuntu
 # Based on instructions from https://antigravity.google/download/linux
 
