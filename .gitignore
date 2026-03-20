@@ -1,3 +1,40 @@
-.idea
-**/__pycache__/
-scripts/sfd_ClientesLinux_DEB64_Rev26
+# Downloaded installation files
+*.deb
+*.gpg
+*.sh.1
+packages.microsoft.gpg
+# Mamba/Conda installer
+Miniforge3-*.sh
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*~
+# Log files
+*.log
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+# Environment files
+.env
+.venv
+env/
+venv/
+# IDE specific
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+# Installation manifests (local user data)
+.ubuntu-installations/
+# Backup files
+*.backup
+*.old
+# Downloaded archives
+*.tar.gz
+*.zip
+*.tar.bz2
+*.tar.xz
