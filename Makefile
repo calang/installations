@@ -97,6 +97,10 @@ drawio:
 	sudo snap install drawio
 	cp -r "compendium discussion icons" ../installed
 
+# target: drivers - # install NVIDIA and other possible drivers
+drivers:
+	sudo ubuntu-drivers autoinstall
+
 # target: freeling - install FreeLing: free linguistic analyses
 freeling:
 	sudo scripts/install-freeling.sh
@@ -126,7 +130,7 @@ gnuplot:
 	sudo scripts/install-gnuplot.sh
 
 # target: gpu - fix links to nvidia gpu libraries
-gpu:	gpu-env
+gpu:	gpu-env drivers
 	sudo scripts/gpu.sh $(GPU_ENV)
 
 # target: gpu-env - create conda env for gpu target
@@ -252,10 +256,6 @@ virtualbox:
 vscode:
 	sudo scripts/install-vscode.sh
 
-# # target: sw-xtras - Ubuntu complementary packages, like 3-rd party
-# sw-xtras:
-# 	sudo scripts/sw-xtras.sh
-
 # target: win11vb-cinde - install VirtualBox Windows 11 VB for Cinde
 win11vb-cinde:
 	@echo 'Installing Windows 11 VirtualBox for Cinde - make sure you have the license to use Windows 11'
@@ -298,27 +298,26 @@ nodockerdesk:
 
 # === targets waiting for a fully automated solution ===
 
+ # target: set-mouse - set mouse buttons
+ set-mouse:
+ 	@echo 'Set right mouse button as primary (1) and left button as secondary (3)'
+ 	@echo 'Set this manually - no good script option found'
+ 	@echo 'device_id=$(xinput list | grep Logitech | awk -F\'id=\' \'{print $2}\' | awk \'{print $1}\')
+ 	@echo 'xinput set-button-map "$device_id" 3 2 1'
 
-# # target: set-mouse - set mouse buttons
-# set-mouse:
-# 	@echo 'Set this manually - no good script option found'
-# 	# Set right mouse button as primary (1) and left button as secondary (3)
-# 	# device_id=$(xinput list | grep Logitech | awk -F'id=' '{print $2}' | awk '{print $1}')
-# 	# xinput set-button-map "$device_id" 3 2 1
 
-
-# # target: subl-default - set Sublime Text editor as default for most text and source files
-# subl-default:
-# 	@echo
-# 	@echo 'Set this manually - no good script option found'
-# 	@echo
-# 	@echo "- Open Nautilus (Files)"
-# 	@echo "- point to a file of the desired type"
-# 	@echo "- right-click,  select 'Open with'"
-# 	@echo "- select sublime_text"
-# 	@echo "- enable 'use this program for all such files'"
-# 	@echo "- open the file"
-# 	@echo
+ # target: subl-default - set Sublime Text editor as default for most text and source files
+ subl-default:
+ 	@echo
+ 	@echo 'Set this manually - no good script option found'
+ 	@echo
+ 	@echo "- Open Nautilus (Files)"
+ 	@echo "- point to a file of the desired type"
+ 	@echo "- right-click,  select 'Open with'"
+ 	@echo "- select sublime_text"
+ 	@echo "- enable 'use this program for all such files'"
+ 	@echo "- open the file"
+ 	@echo
 
 
 # target push - sample docker image push, asking for passwords
