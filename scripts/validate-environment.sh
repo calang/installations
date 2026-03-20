@@ -27,8 +27,8 @@ if [ -f /etc/os-release ]; then
     source /etc/os-release
     log_info "OS: $NAME $VERSION"
 
-    if [[ "$VERSION_ID" != "24.04" ]]; then
-        log_warn "This project is designed for Ubuntu 24.04, you have $VERSION_ID"
+    if [[ "$VERSION_ID" < "24.04" ]]; then
+        log_warn "This project is designed for Ubuntu 24.04 or above, you have $VERSION_ID"
         WARNINGS=$((WARNINGS + 1))
     fi
 else
