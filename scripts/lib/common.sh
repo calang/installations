@@ -4,8 +4,6 @@
 #
 # Usage:
 #   source "$(dirname "$0")/lib/common.sh"
-#   or
-#   source "$(dirname "$0")/../lib/common.sh"  # if in subdirectory
 #
 # This library provides:
 #   - Consistent error handling
