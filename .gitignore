@@ -1,3 +1,5 @@
+# archivos para instalación de firma digital
+scripts/sfd_ClientesLinux_DEB64_Rev26
 # Downloaded installation files
 *.deb
 *.gpg
