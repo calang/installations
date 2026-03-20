@@ -8,8 +8,8 @@
 # all env variables are available
 # = uses recursive substitution
 # :=  uses immediate substitution
-GPU_ENV := nvidia_gpu_setup
 
+include config/default.conf
 
 # === standard targets ===
 
@@ -131,11 +131,11 @@ gnuplot:
 
 # target: gpu - fix links to nvidia gpu libraries
 gpu:	gpu-env drivers
-	sudo scripts/gpu.sh $(GPU_ENV)
+	sudo scripts/gpu.sh
 
 # target: gpu-env - create conda env for gpu target
 gpu-env:	conda scripts/environment.yml
-	scripts/gpu-env.sh $(GPU_ENV)
+	scripts/gpu-env.sh
 
 # target: graphviz - install graphviz
 graphviz:
@@ -298,26 +298,26 @@ nodockerdesk:
 
 # === targets waiting for a fully automated solution ===
 
- # target: set-mouse - set mouse buttons
- set-mouse:
- 	@echo 'Set right mouse button as primary (1) and left button as secondary (3)'
- 	@echo 'Set this manually - no good script option found'
- 	@echo 'device_id=$(xinput list | grep Logitech | awk -F\'id=\' \'{print $2}\' | awk \'{print $1}\')
- 	@echo 'xinput set-button-map "$device_id" 3 2 1'
+# target: set-mouse - set mouse buttons
+set-mouse:
+	@echo 'Set right mouse button as primary (1) and left button as secondary (3)'
+	@echo 'Set this manually - no good script option found'
+	@echo 'device_id=$(xinput list | grep Logitech | awk -F\'id=\' \'{print $2}\' | awk \'{print $1}\')'
+	@echo 'xinput set-button-map "$device_id" 3 2 1'
 
 
  # target: subl-default - set Sublime Text editor as default for most text and source files
- subl-default:
- 	@echo
- 	@echo 'Set this manually - no good script option found'
- 	@echo
- 	@echo "- Open Nautilus (Files)"
- 	@echo "- point to a file of the desired type"
- 	@echo "- right-click,  select 'Open with'"
- 	@echo "- select sublime_text"
- 	@echo "- enable 'use this program for all such files'"
- 	@echo "- open the file"
- 	@echo
+subl-default:
+	@echo
+	@echo 'Set this manually - no good script option found'
+	@echo
+	@echo "- Open Nautilus (Files)"
+	@echo "- point to a file of the desired type"
+	@echo "- right-click,  select 'Open with'"
+	@echo "- select sublime_text"
+	@echo "- enable 'use this program for all such files'"
+	@echo "- open the file"
+	@echo
 
 
 # target push - sample docker image push, asking for passwords
