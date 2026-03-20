@@ -25,15 +25,14 @@ help:
 
 # === package installation and configuration - when possible ===
 
+# Pending:
 
 # Postman
 # Orange
 # Knime
-# kdif3
+# kdiff3
 # tomplay
-# musescore
 # pandoc
-# VS Code
 # dconf-editor
 # Slack
 # discourse
@@ -62,6 +61,10 @@ antigravity:
 # target: chrome - install chrome
 chrome:
 	sudo scripts/install-chrome.sh
+
+# target: claude - install claude code
+claude:
+	scripts/install-claude.sh
 
 # target: conda - install conda (mamba)
 conda:	mamba
@@ -106,7 +109,7 @@ fuse:
 gaudi:	java
 	cd scripts/sfd_ClientesLinux_DEB64_Rev26; sudo ./instalacion.sh
 
-# target: git - install git
+# target: git - install git, gitk, git-gui
 git:
 	sudo scripts/install-git.sh
 
@@ -235,6 +238,11 @@ screen:
 # target: unixodbc - ODBC solution for UNIX/Linux
 unixodbc:
 	sudo scripts/install-unixodbc.sh
+
+# target: uv - package management and environment
+uv:
+	sudo snap install --classic astral-uv
+	uv self version
 
 # target: virtualbox - install Oracle VirtualBox
 virtualbox:

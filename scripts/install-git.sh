@@ -19,4 +19,4 @@ fi
 set -x
 
 
-apt install -y git
+apt install -y git gitk git-gui

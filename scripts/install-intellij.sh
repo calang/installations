@@ -24,15 +24,14 @@ rm -rf /opt/idea*
 
 
 echo Download tarball
-TAR=ideaIC-2025.2.4.tar.gz
+TAR=idea-2025.3.tar.gz
 
 [[ -f $TAR ]] || wget https://download.jetbrains.com/idea/$TAR
 
-
 echo extract the tarball to /opt
-tar -xzf ideaIC-*.tar.gz -C /opt
+tar -xzf $TAR -C /opt
 
-ln -s /opt/idea-IC* /opt/idea
+ln -s /opt/idea* /opt/idea
 
 
 # create desktop entry
