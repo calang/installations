@@ -22,6 +22,6 @@ set -x
 
 dpkg -i google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
 
-set x
+set +x
 echo If you encounter any dependency issues, resolve them by running:
 echo sudo apt-get install -f
