@@ -44,7 +44,7 @@ set -x
 
 CONDA_ENV=$1
 
-conda activate $CONDA_ENV
+conda activate "$CONDA_ENV"
 
 
 echo Create symbolic links to NVIDIA shared libraries
@@ -62,4 +62,3 @@ popd
 
 echo Verify the GPU setup
 python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
-[]
