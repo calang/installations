@@ -1,39 +1,39 @@
 #!/usr/bin/env bash
+#
+# install-win11vb-cinde.sh - Install Windows 11 VirtualBox VM for CINDE
+#
+# Description:
+#   Creates and configures a Windows 11 VirtualBox VM named Win11-CINDE.cr,
+#   with unattended installation using a local ISO, configured for Costa Rica
+#   locale and timezone.
+#
+# Requirements:
+#   - Ubuntu 24.04
+#   - Regular user (no sudo)
+#   - VirtualBox already installed: make virtualbox
+#   - Windows 11 ISO downloaded to ~/VirtualBox/ISOs/
+#
+# Usage:
+#   scripts/install-win11vb-cinde.sh
+#
+# Installation Method:
+#   VBoxManage unattended install
+#
 
-# exit on any command failure
-# or usage of undefined variable
-# or failure of any command within a pipeline
-set -euo pipefail
+# Load common functions and error handling
+source "$(dirname "$0")/lib/common.sh"
 
-# install Windows11 VirtualBox
+# ============================================================================
+# Configuration
+# ============================================================================
 
-# Check for dependencies
-if [ ! -f /usr/bin/virtualbox ]; then
-  echo "virtualboxx command not found, install VirtualBox before proceeding"
-  exit 1
-fi
-
-
-# uncomment these lines if you need to ensure this runs under root/sudo
-if [ "$EUID" -eq 0 ]
-	then echo "Please run as regular user"
-	exit 1
-fi
-
-set -x
-
-
-# --- 1. SET YOUR VARIABLES ---
+PACKAGE_NAME="Win11-CINDE.cr"
 
 # Name for the new VM
 VM_NAME="Win11-CINDE.cr"
 
-# Full path to your downloaded Windows 11 ISO
-ISO_PATH="/home/calang/VirtualBox/ISOs/Win11_25H2_EnglishInternational_x64.iso"
-if [ ! -f "$ISO_PATH" ]; then
-    echo "Error: ISO file not found at $ISO_PATH"
-    exit 1
-fi
+# Directory containing Windows ISO images
+ISO_DIR="/home/calang/VirtualBox/ISOs"
 
 # Windows user/password you want the script to create
 # IMPORTANT: Password must be 8+ chars, with upper, lower, and number.
@@ -42,64 +42,81 @@ WIN_PASSWORD="Cinde2025!"
 
 # VM Hardware Settings
 VM_CPUS=4
-VM_RAM=16384 # in MB (16 GB)
-VM_DISK_SIZE=102400 # in MB (100 GB)
+VM_RAM=16384   # in MB (16 GB)
+VM_DISK_SIZE=102400  # in MB (100 GB)
 
-# --- 2. CHECK IF VM ALREADY EXISTS ---
-echo "Checking if VM '$VM_NAME' already exists..."
+# ============================================================================
+# Pre-flight Checks
+# ============================================================================
 
-if VBoxManage showvminfo "$VM_NAME" &>/dev/null; then
-    echo ""
-    echo "=========================================="
-    echo "WARNING: VM '$VM_NAME' already exists!"
-    echo "=========================================="
-    echo ""
+print_header "Installing $PACKAGE_NAME"
 
-    # Temporarily disable exit on error for user input
-    set +e
+require_non_root
 
-    read -p "Do you want to remove the existing VM and continue? (yes/no): " response
+require_command "VBoxManage" "Please install VirtualBox first: make virtualbox"
 
-    # Re-enable exit on error
-    set -e
+# Select ISO from available files
+mapfile -t ISO_FILES < <(find "$ISO_DIR" -maxdepth 1 -name "*.iso" -type f | sort)
 
-    case "$response" in
-        [Yy]|[Yy][Ee][Ss])
-            echo "Removing existing VM '$VM_NAME'..."
-
-            # Power off VM if running
-            if VBoxManage showvminfo "$VM_NAME" | grep -q "State:.*running"; then
-                echo "Powering off running VM..."
-                VBoxManage controlvm "$VM_NAME" poweroff || true
-                sleep 2
-            fi
-
-            # Unregister and delete the VM with all files
-            VBoxManage unregistervm "$VM_NAME" --delete
-            echo "Existing VM removed successfully."
-            echo ""
-            ;;
-        *)
-            echo ""
-            echo "=========================================="
-            echo "Installation cancelled by user."
-            echo "Existing VM '$VM_NAME' was not modified."
-            echo "=========================================="
-            exit 0
-            ;;
-    esac
+if [ ${#ISO_FILES[@]} -eq 0 ]; then
+    log_error "No ISO files found in $ISO_DIR"
+    log_info "Download a Windows 11 ISO and place it in $ISO_DIR"
+    exit 1
+elif [ ${#ISO_FILES[@]} -eq 1 ]; then
+    ISO_PATH="${ISO_FILES[0]}"
+    log_info "Using ISO: $(basename "$ISO_PATH")"
+else
+    echo
+    log_info "Available ISO files:"
+    for i in "${!ISO_FILES[@]}"; do
+        echo "  $((i+1))) $(basename "${ISO_FILES[$i]}")"
+    done
+    echo
+    read -r -p "Select ISO [1-${#ISO_FILES[@]}]: " iso_choice
+    if ! [[ "$iso_choice" =~ ^[0-9]+$ ]] || [ "$iso_choice" -lt 1 ] || [ "$iso_choice" -gt ${#ISO_FILES[@]} ]; then
+        log_error "Invalid selection: $iso_choice"
+        exit 1
+    fi
+    ISO_PATH="${ISO_FILES[$((iso_choice-1))]}"
+    log_info "Using ISO: $(basename "$ISO_PATH")"
 fi
 
-# --- 3. CREATE THE VM ---
-echo "Creating VM: $VM_NAME..."
+# Check if VM already exists
+log_step "Checking if VM '$VM_NAME' already exists..."
 
-# Create the VM with EFI firmware
+if VBoxManage showvminfo "$VM_NAME" &>/dev/null; then
+    log_warn "VM '$VM_NAME' already exists!"
+
+    if ask_yes_no "Remove the existing VM and continue?" "no"; then
+        log_step "Removing existing VM '$VM_NAME'..."
+
+        if VBoxManage showvminfo "$VM_NAME" | grep -q "State:.*running"; then
+            log_step "Powering off running VM..."
+            VBoxManage controlvm "$VM_NAME" poweroff || true
+            sleep 2
+        fi
+
+        VBoxManage unregistervm "$VM_NAME" --delete
+        log_success "Existing VM removed."
+    else
+        log_info "Installation cancelled. Existing VM '$VM_NAME' was not modified."
+        exit 0
+    fi
+fi
+
+# ============================================================================
+# Installation
+# ============================================================================
+
+log_step "Creating VM: $VM_NAME..."
+
 VBoxManage createvm \
     --name "$VM_NAME" \
     --ostype "Windows11_64" \
     --register
 
-# Configure VM settings
+log_step "Configuring VM settings..."
+
 VBoxManage modifyvm "$VM_NAME" \
     --firmware efi \
     --cpus $VM_CPUS \
@@ -114,7 +131,8 @@ VBoxManage modifyvm "$VM_NAME" \
     --audioout on \
     --audioin on
 
-# Create and attach storage
+log_step "Creating and attaching storage..."
+
 VBOX_HOME=$(VBoxManage list systemproperties | grep "^Default machine folder:" | sed 's/Default machine folder: *//')
 VM_DISK="$VBOX_HOME/$VM_NAME/${VM_NAME}.vdi"
 
@@ -146,18 +164,14 @@ VBoxManage storageattach "$VM_NAME" \
     --type dvddrive \
     --medium "$ISO_PATH"
 
-# --- 4. RUN UNATTENDED INSTALLATION ---
+log_step "Ensuring virtualbox-guest-additions-iso is installed..."
+ensure_apt_package "virtualbox-guest-additions-iso"
 
-echo "installing  virtualbox-guest-additions-iso"
-dpkg -l | grep virtualbox-guest-additions \
-  || apt-get install virtualbox-guest-additions-iso
-
-echo "Starting unattended installation for $VM_NAME..."
+log_step "Starting unattended installation for $VM_NAME..."
 
 # Guest Additions ISO location (optional - VirtualBox will auto-download if not specified)
 # If you have a local copy, uncomment and set the path:
 # ADDITIONS_ISO="/usr/share/virtualbox/VBoxGuestAdditions.iso"
-# Or download it manually from: https://download.virtualbox.org/virtualbox/
 
 VBoxManage unattended install "$VM_NAME" \
     --iso="$ISO_PATH" \
@@ -172,15 +186,19 @@ VBoxManage unattended install "$VM_NAME" \
 #    --additions-iso="$ADDITIONS_ISO" \
 #    --key="XXXXX-XXXXX-XXXXX-XXXXX-XXXXX" \
 
-# --- 5. START THE VM ---
-echo "Starting VM installation..."
+log_step "Starting VM..."
 VBoxManage startvm "$VM_NAME" --type gui
 
-echo "VM creation and installation started."
-echo "A new VM window will open and run the automated setup."
+# ============================================================================
+# Post-Installation
+# ============================================================================
 
-set +x
-echo ""
-echo "=========================================="
-echo "Win11-CINDE installation completed!"
-echo "=========================================="
+log_success "$PACKAGE_NAME VM created and installation started."
+
+echo
+log_info "Next steps:"
+log_info "  1. Complete Windows setup in the VM window that just opened"
+log_info "     - Choose Win11 Pro for Workstations"
+log_info "  2. Login with user: $WIN_USER"
+
+print_separator
