@@ -45,6 +45,11 @@ VM_CPUS=4
 VM_RAM=16384   # in MB (16 GB)
 VM_DISK_SIZE=102400  # in MB (100 GB)
 
+# Shared folder (host path → drive letter inside Windows)
+SHARED_FOLDER_HOST="/home/calang"
+SHARED_FOLDER_NAME="calang"
+SHARED_FOLDER_DRIVE="Z:"
+
 # ============================================================================
 # Pre-flight Checks
 # ============================================================================
@@ -131,6 +136,18 @@ VBoxManage modifyvm "$VM_NAME" \
     --audioout on \
     --audioin on
 
+log_step "Configuring clipboard, drag-and-drop, and shared folder..."
+
+VBoxManage modifyvm "$VM_NAME" \
+    --clipboard-mode bidirectional \
+    --drag-and-drop bidirectional
+
+VBoxManage sharedfolder add "$VM_NAME" \
+    --name "$SHARED_FOLDER_NAME" \
+    --hostpath "$SHARED_FOLDER_HOST" \
+    --automount \
+    --auto-mount-point "$SHARED_FOLDER_DRIVE"
+
 log_step "Creating and attaching storage..."
 
 VBOX_HOME=$(VBoxManage list systemproperties | grep "^Default machine folder:" | sed 's/Default machine folder: *//')
@@ -204,7 +221,7 @@ log_info "       1. In the VirtualBox menu: Devices → Insert Guest Additions C
 log_info "       2. Inside Windows, open File Explorer → find the mounted CD drive (usually D:)"
 log_info "       3. Run VBoxWindowsAdditions.exe"
 log_info "       4. Follow the installer — reboot when prompted"
-log_info "       After reboot, View → Auto-resize Guest Display, which should work automatically from then on.
+log_info "     - After reboot, View → Auto-resize Guest Display, which should work automatically from then on."
 log_info "  2. Login with user: $WIN_USER"
 
 print_separator
