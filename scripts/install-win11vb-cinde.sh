@@ -121,7 +121,7 @@ VBoxManage modifyvm "$VM_NAME" \
     --firmware efi \
     --cpus $VM_CPUS \
     --memory $VM_RAM \
-    --graphicscontroller vmsvga \
+    --graphicscontroller vboxsvga \
     --vram 128 \
     --tpm-type 2.0 \
     --mouse usbtablet \
@@ -199,6 +199,12 @@ echo
 log_info "Next steps:"
 log_info "  1. Complete Windows setup in the VM window that just opened"
 log_info "     - Choose Win11 Pro for Workstations"
+log_info "     - Install Guest Additions inside Windows"
+log_info "       1. In the VirtualBox menu: Devices → Insert Guest Additions CD image..."
+log_info "       2. Inside Windows, open File Explorer → find the mounted CD drive (usually D:)"
+log_info "       3. Run VBoxWindowsAdditions.exe"
+log_info "       4. Follow the installer — reboot when prompted"
+log_info "       After reboot, View → Auto-resize Guest Display, which should work automatically from then on.
 log_info "  2. Login with user: $WIN_USER"
 
 print_separator
