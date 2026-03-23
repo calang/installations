@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# install-win11vb-cinde.sh - Install Windows 11 VirtualBox VM for CINDE
+# install-win11vb.sh - Install a Windows 11 VirtualBox VM
 #
 # Description:
-#   Creates and configures a Windows 11 VirtualBox VM named Win11-CINDE.cr,
+#   Creates and configures a Windows 11 VirtualBox VM with the given name,
 #   with unattended installation using a local ISO, configured for Costa Rica
 #   locale and timezone.
 #
@@ -14,7 +14,7 @@
 #   - Windows 11 ISO downloaded to ~/VirtualBox/ISOs/
 #
 # Usage:
-#   scripts/install-win11vb-cinde.sh
+#   scripts/install-win11vb.sh [VM_NAME]
 #
 # Installation Method:
 #   VBoxManage unattended install
@@ -27,10 +27,18 @@ source "$(dirname "$0")/lib/common.sh"
 # Configuration
 # ============================================================================
 
-PACKAGE_NAME="Win11-CINDE.cr"
+# Name for the new VM: use first argument or prompt
+if [ -n "${1:-}" ]; then
+    VM_NAME="$1"
+else
+    read -r -p "Enter the name for the new VM: " VM_NAME
+    if [ -z "$VM_NAME" ]; then
+        log_error "VM name cannot be empty."
+        exit 1
+    fi
+fi
 
-# Name for the new VM
-VM_NAME="Win11-CINDE.cr"
+PACKAGE_NAME="$VM_NAME"
 
 # Directory containing Windows ISO images
 ISO_DIR="/home/calang/VirtualBox/ISOs"

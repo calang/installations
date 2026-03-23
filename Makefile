@@ -260,7 +260,7 @@ vscode:
 win11vb-cinde:
 	@echo 'Installing Windows 11 VirtualBox for Cinde - make sure you have the license to use Windows 11'
 	@echo '*** This is disabled, for licensing reasons - enable it if you have the license ***'
-	#scripts/install-win11vb-cinde.sh
+	scripts/install-win11vb.sh win11vb-cinde.cr
 
 # target: xdot - install xdot.py: interactive viewer for graphs written in Graphviz's dot language
 xdot:
