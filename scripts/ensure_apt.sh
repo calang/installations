@@ -3,7 +3,7 @@
 function ensure_apt() {
 	pack=$1
 
-	if apt list 2>/dev/null | grep -q $pack
+	if dpkg -l "$pack" 2>/dev/null | grep -q "^ii"
 	then
 		echo "$pack is already installed"
 	else
