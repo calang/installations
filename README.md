@@ -2,7 +2,7 @@
 
 This repository is a collection of shell scripts and a Makefile to automate the setup of an Ubuntu workstation (Dell XPS). It manages installation and configuration of development tools, languages, and applications.
 
-Read [CLAUDE.md](CLAUDE.md) for guidance on how to use this repository effectively, including conventions and best practices for running the scripts and understanding the Makefile targets.
+Read [CLAUDE.md](.claude/CLAUDE.md) for guidance on how to use this repository effectively, including conventions and best practices for running the scripts and understanding the Makefile targets.
 
 ## Basic setup
 
