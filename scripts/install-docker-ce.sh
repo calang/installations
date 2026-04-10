@@ -41,16 +41,12 @@ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyring
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 
 # Add the repository to Apt sources
-# 24.10 oracular oriole
-# 24.04 noble noble numbat
-# 22.04 jammy jellyfish
-# 20.04 focal fossa
-
-VERSION_CODENAME=oracular
+# Get Ubuntu release codename dynamically from /etc/os-release
+. /etc/os-release
 
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  ${VERSION_CODENAME} stable" | \
   tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 apt-get update -y
