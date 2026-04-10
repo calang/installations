@@ -106,11 +106,11 @@ fi
 log_step "Checking disk space..."
 
 # Check available space in /
-ROOT_SPACE=$(df -h / | awk 'NR==2 {print $4}')
+ROOT_SPACE=$(df -h --output=avail / | tail -1 | tr -d ' ')
 log_info "Available space on /: $ROOT_SPACE"
 
 # Check if less than 10GB
-ROOT_SPACE_GB=$(df -BG / | awk 'NR==2 {print $4}' | sed 's/G//')
+ROOT_SPACE_GB=$(df -BG --output=avail / | tail -1 | tr -d ' G')
 if [ "$ROOT_SPACE_GB" -lt 10 ]; then
     log_warn "Low disk space on / (less than 10GB available)"
     WARNINGS=$((WARNINGS + 1))
@@ -118,7 +118,7 @@ fi
 
 # Check home directory space
 if [ -d "$HOME" ]; then
-    HOME_SPACE=$(df -h "$HOME" | awk 'NR==2 {print $4}')
+    HOME_SPACE=$(df -h --output=avail "$HOME" | tail -1 | tr -d ' ')
     log_info "Available space in \$HOME: $HOME_SPACE"
 fi
 
