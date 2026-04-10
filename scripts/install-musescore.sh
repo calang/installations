@@ -30,7 +30,7 @@ echo
 read -p "hit Enter, once the image has been downloaded" enter
 
 
-LAST_DOWNLOAD=$(ls -t $DOWNLOADS/MuseScore-Studio*-x86_64.AppImage | head -1)
+LAST_DOWNLOAD=$(find "$DOWNLOADS" -maxdepth 1 -name 'MuseScore-Studio*-x86_64.AppImage' -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2-)
 #echo last: "|$LAST_DOWNLOAD|"
 
 chmod +x $LAST_DOWNLOAD
