@@ -194,6 +194,10 @@ musescore:	fuse screen
 music_dep:
 	sudo apt-get install abcmidi timidity
 
+# target: nvm - install NVM (Node Version Manager) system-wide and latest LTS Node.js
+nvm:
+	sudo scripts/install-nvm.sh
+
 # target: pgadmin - GUI to manage PostgreSQL DBs
 pgadmin:
 	sudo scripts/install-pgadmin.sh
