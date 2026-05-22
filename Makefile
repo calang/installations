@@ -198,6 +198,10 @@ music_dep:
 nvm:
 	sudo scripts/install-nvm.sh
 
+# target: obsidian - install Obsidian note-taking app
+obsidian:
+	sudo scripts/install-obsidian.sh
+
 # target: pgadmin - GUI to manage PostgreSQL DBs
 pgadmin:
 	sudo scripts/install-pgadmin.sh
