@@ -66,6 +66,10 @@ chrome:
 claude:
 	scripts/install-claude.sh
 
+# target: claude-desktop - install Claude Desktop (official, beta)
+claude-desktop:
+	sudo scripts/install-claude-desktop.sh
+
 # target: conda - install conda (mamba)
 conda:	mamba
 
