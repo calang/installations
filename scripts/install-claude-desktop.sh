@@ -57,6 +57,17 @@ fi
 
 if is_package_installed "$PACKAGE_NAME"; then
     log_info "$PACKAGE_NAME is already installed"
+fi
+
+# Install the Intel VA-API driver, otherwise the Electron GPU process logs
+# "vaInitialize failed: unknown libva error" (libva has no hardware driver
+# to load) on Intel graphics.
+if lspci | grep -qi "VGA.*Intel\|3D.*Intel"; then
+    log_step "Installing Intel VA-API driver (intel-media-va-driver, vainfo)..."
+    ensure_apt_packages "intel-media-va-driver" "vainfo"
+fi
+
+if is_package_installed "$PACKAGE_NAME"; then
     exit 0
 fi
 
