@@ -29,12 +29,19 @@ google-chrome https://musescore.org/en/download/musescore-x86_64.AppImage
 echo 
 read -p "hit Enter, once the image has been downloaded" enter
 
+set -x
 
 LAST_DOWNLOAD=$(find "$DOWNLOADS" -maxdepth 1 -name 'MuseScore-Studio*-x86_64.AppImage' -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2-)
-#echo last: "|$LAST_DOWNLOAD|"
+
+# echo last: "|$LAST_DOWNLOAD|"
 
 chmod +x $LAST_DOWNLOAD
 
-screen $LAST_DOWNLOAD 2&>/dev/null
+rm -rf $HOME/.local/bin/musescore
+rm -rf $HOME/.local/bin/musescore4portable
+rm -rf $HOME/.local/bin/MuseScore-Studio*-x86_64.AppImage
 
-ln -s $HOME/.local/bin/musescore $HOME/.local/bin/musescore4portable
+cp $LAST_DOWNLOAD $HOME/.local/bin/
+APPIMAGE=`basename $LAST_DOWNLOAD`
+ln -s $HOME/.local/bin/$APPIMAGE $HOME/.local/bin/musescore4portable
+ln -s $HOME/.local/bin/musescore4portable $HOME/.local/bin/musescore
