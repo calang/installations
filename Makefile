@@ -206,6 +206,10 @@ nvm:
 obsidian:
 	sudo scripts/install-obsidian.sh
 
+# target: ollama - install Ollama (local LLM runner)
+ollama:
+	sudo scripts/install-ollama.sh
+
 # target: pgadmin - GUI to manage PostgreSQL DBs
 pgadmin:
 	sudo scripts/install-pgadmin.sh
