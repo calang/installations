@@ -113,6 +113,10 @@ freeling:
 fuse:
 	apt list fuse || sudo apt-get install -y libfuse2
 
+# target: fwupd - install fwupd, firmware update daemon
+fwupd:
+	sudo scripts/install-fwupd.sh
+
 # target: gaudi - install gaudi, agente firmador de firma digital BCCR
 gaudi:	java
 	cd scripts/sfd_ClientesLinux_DEB64_Rev26; sudo ./instalacion.sh
