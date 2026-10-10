@@ -290,6 +290,10 @@ xdot:
 yed:
 	scripts/install-yed.sh
 
+# target: yt-dlp - install yt-dlp (YouTube audio/video downloader) via pipx, plus ffmpeg
+yt-dlp:
+	scripts/install-yt-dlp.sh
+
 # target: zim - install zim
 zim:
 	sudo scripts/install-zim.sh
