@@ -275,7 +275,7 @@ record_version() {
     # Get version
     local version_output
     if version_output=$(eval "$version_cmd" 2>&1 | head -n 1); then
-        echo "$package: $version_output" >> "$manifest"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') $package: $version_output" >> "$manifest"
         log_debug "Recorded version: $package: $version_output"
     else
         log_warn "Could not determine version for $package"
